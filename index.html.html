@@ -1,0 +1,214 @@
+<html><head>
+<meta charset="UTF-8">
+<title>Previsão do Tempo | WeatherSim</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: linear-gradient(180deg, #1a237e, #0d47a1);
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.weather-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    background: #00b0ff;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0091ea;
+}
+
+.weather-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.weather-detail {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+}
+
+.temp {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    overflow-x: auto;
+    padding: 20px 0;
+}
+
+.forecast-day {
+    text-align: center;
+    min-width: 120px;
+}
+
+.weather-icon {
+    width: 50px;
+    height: 50px;
+    margin: 10px auto;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animated-icon {
+    animation: float 3s ease-in-out infinite;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Previsão do Tempo</h1>
+        
+        <div class="search-box">
+            <input type="text" id="city-search" placeholder="Digite o nome da cidade...">
+            <button onclick="searchWeather()">Buscar</button>
+        </div>
+
+        <div class="weather-card">
+            <div class="weather-info">
+                <div class="weather-detail">
+                    <svg class="weather-icon animated-icon" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="25" fill="#FFD700"/>
+                        <line x1="50" y1="15" x2="50" y2="0" stroke="#FFD700" stroke-width="3"/>
+                        <line x1="50" y1="85" x2="50" y2="100" stroke="#FFD700" stroke-width="3"/>
+                        <line x1="15" y1="50" x2="0" y2="50" stroke="#FFD700" stroke-width="3"/>
+                        <line x1="85" y1="50" x2="100" y2="50" stroke="#FFD700" stroke-width="3"/>
+                    </svg>
+                    <div class="temp">28°C</div>
+                    <div>Ensolarado</div>
+                </div>
+                <div class="weather-detail">
+                    <h3>Detalhes</h3>
+                    <p>Umidade: 65%</p>
+                    <p>Vento: 12 km/h</p>
+                    <p>Pressão: 1013 hPa</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="forecast">
+            <div class="forecast-day">
+                <h4>Segunda</h4>
+                <svg class="weather-icon" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="20" fill="#FFD700"/>
+                    <path d="M25,50 Q50,75 75,50" fill="none" stroke="#fff" stroke-width="3"/>
+                </svg>
+                <div>26°C</div>
+            </div>
+            <div class="forecast-day">
+                <h4>Terça</h4>
+                <svg class="weather-icon" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="20" fill="#888"/>
+                    <path d="M20,40 Q50,60 80,40" fill="none" stroke="#fff" stroke-width="3"/>
+                    <path d="M20,50 Q50,70 80,50" fill="none" stroke="#fff" stroke-width="3"/>
+                </svg>
+                <div>24°C</div>
+            </div>
+            <!-- Mais dias da semana aqui -->
+        </div>
+    </div>
+
+<script>
+function searchWeather() {
+    const cityInput = document.getElementById('city-search');
+    const city = cityInput.value;
+    
+    // Simulando uma chamada API
+    if (city.trim() !== '') {
+        // Aqui você normalmente faria uma chamada real à API de previsão do tempo
+        updateWeatherDisplay({
+            temp: Math.floor(Math.random() * 15 + 20), // Temperatura entre 20-35°C
+            condition: ['Ensolarado', 'Nublado', 'Chuvoso'][Math.floor(Math.random() * 3)],
+            humidity: Math.floor(Math.random() * 30 + 50), // Umidade entre 50-80%
+            windSpeed: Math.floor(Math.random() * 20 + 5) // Vento entre 5-25 km/h
+        });
+    }
+}
+
+function updateWeatherDisplay(data) {
+    document.querySelector('.temp').textContent = `${data.temp}°C`;
+    document.querySelector('.weather-detail div:nth-child(3)').textContent = data.condition;
+    document.querySelector('.weather-detail p:nth-child(2)').textContent = `Umidade: ${data.humidity}%`;
+    document.querySelector('.weather-detail p:nth-child(3)').textContent = `Vento: ${data.windSpeed} km/h`;
+    
+    // Atualiza o ícone com base na condição
+    updateWeatherIcon(data.condition);
+}
+
+function updateWeatherIcon(condition) {
+    const icon = document.querySelector('.weather-icon');
+    // Aqui você pode adicionar lógica para mudar o ícone baseado na condição
+}
+
+// Detectar localização do usuário ao carregar
+window.addEventListener('load', () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            // Aqui você pode usar as coordenadas para buscar o tempo
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            // Implementar chamada à API com as coordenadas
+        });
+    }
+});
+</script>
+</body></html>
